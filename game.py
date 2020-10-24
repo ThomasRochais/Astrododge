@@ -17,6 +17,7 @@ class Game():
         self.curr_menu = self.main_menu
     #Thomas: modify to actually play a game
     def game_loop(self):
+        #Make classes
         #Some initial values
         x=50
         y=50    
@@ -39,6 +40,8 @@ class Game():
             if keys[pygame.K_DOWN]:
                 y += vel   
             pygame.draw.rect(self.display,(255,0,0),(x,y,width,height))#Add red rectangle
+            #Above should go into classes and functions
+            ########################
             self.window.blit(self.display, (0,0))#Blitting is drawing
             pygame.display.update()
             self.reset_keys()
