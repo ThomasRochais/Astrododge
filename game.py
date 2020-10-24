@@ -1,6 +1,6 @@
 import pygame
 from menu import *
-
+from projectiles import *
 class Game():
     def __init__(self):
         pygame.init()
