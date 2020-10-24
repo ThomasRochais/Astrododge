@@ -13,7 +13,8 @@ class Rocket():
 
 
     def blit_rocket(self):
-        pygame.draw.rect(self.game.display,(255,0,0),(self.x,self.y,self.width,self.height))
+        self.game.display.blit(self.spaceship, (self.x,self.y))
+        #pygame.draw.rect(self.game.display,(255,0,0),(self.x,self.y,self.width,self.height))
 
     def move_left(self):
         if self.x - self.vel > 0:
