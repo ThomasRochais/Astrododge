@@ -14,13 +14,17 @@ class Rocket():
         pygame.draw.rect(self.game.display,(255,0,0),(self.x,self.y,self.width,self.height))
 
     def move_left(self):
-        self.x -= self.vel
+        if self.x - self.vel > 0:
+            self.x -= self.vel
 
     def move_right(self):
-        self.x += self.vel
+        if self.x + self.vel < self.game.DISPLAY_W - self.width: 
+            self.x += self.vel
 
     def move_up(self):
-        self.y -= self.vel
-        
+        if self.y - self.vel > 0:
+            self.y -= self.vel
+
     def move_down(self):
-        self.y += self.vel
+        if self.y + self.vel < self.game.DISPLAY_H - self.height:
+            self.y += self.vel
