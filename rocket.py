@@ -9,6 +9,8 @@ class Rocket():
         #Initial position of the rectangle (bottom, centered)
         self.x, self.y = self.game.DISPLAY_W / 2 - self.width/2, self.game.DISPLAY_H - self.height
         self.vel=1 #Moving velocity
+        self.spaceship = pygame.transform.scale(pygame.image.load(os.path.join("assets/sprites", "spaceship-a.svg")), (round(self.width),round(self.height)))
+
 
     def blit_rocket(self):
         pygame.draw.rect(self.game.display,(255,0,0),(self.x,self.y,self.width,self.height))

@@ -34,9 +34,8 @@ class Game():
             if self.UP_KEY:
                 self.rocket.move_up()
             if self.DOWN_KEY:
-                self.rocket.move_down()   
-            self.rocket.blit_rocket()#Draw the rocket
-            self.window.blit(self.display, (0,0))#Blitting is drawing
+                self.rocket.move_down() 
+            self.redrawGameWindow()
             pygame.display.update()
             self.reset_keys()
 
@@ -68,3 +67,7 @@ class Game():
         text_rect = text_surface.get_rect()
         text_rect.center = (x,y)
         self.display.blit(text_surface,text_rect)
+
+    def redrawGameWindow(self):
+        self.rocket.blit_rocket()#Draw the rocket
+        self.window.blit(self.display, (0,0))#Blitting is drawing
