@@ -22,7 +22,7 @@ class Game():
     def game_loop(self):
         while self.playing:
             #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-            pygame.key.set_repeat(1,5)#So rocket can keep moving when pressing and holding keys
+            pygame.key.set_repeat(10,5)#So rocket can keep moving when pressing and holding keys
             self.display.fill(self.BLACK)#Black screen
             self.check_events()
             if self.START_KEY:
@@ -36,7 +36,6 @@ class Game():
             if self.DOWN_KEY:
                 self.rocket.move_down() 
             self.redrawGameWindow()
-            pygame.display.update()
             self.reset_keys()
 
     def check_events(self):
@@ -71,3 +70,4 @@ class Game():
     def redrawGameWindow(self):
         self.rocket.blit_rocket()#Draw the rocket
         self.window.blit(self.display, (0,0))#Blitting is drawing
+        pygame.display.update()
