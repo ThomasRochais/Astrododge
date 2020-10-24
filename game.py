@@ -2,7 +2,6 @@ import pygame
 from pygame import key
 from menu import *
 from rocket import *
-from projectiles import *
 class Game():
     def __init__(self):
         pygame.init()
