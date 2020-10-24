@@ -1,6 +1,6 @@
 import pygame
-#from game import Game
-from game_original import Game
+from game import Game
+#from game_original import Game
 
 if __name__ == "__main__":
     g = Game()

@@ -17,44 +17,31 @@ class Game():
         self.curr_menu = self.main_menu
     #Thomas: modify to actually play a game
     def game_loop(self):
+        #Some initial values
+        x=50
+        y=50    
+        width=40
+        height=60
+        vel=5
         while self.playing:
             self.check_events()
             if self.START_KEY:
-                self.playing= True
-                #Code from the tutorial
-                pygame.display.set_caption("Test Game")
-                x=50
-                y=50    
-                width=40
-                height=60
-                vel=5
-                run=True
-                while run:
-                    self.draw_text('Coucou', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-                    pygame.time.delay(100)
-                    for event in pygame.event.get():
-                        if event.type==pygame.QUIT:
-                            run=False
-                    keys=pygame.key.get_pressed()
-                    if keys[pygame.K_LEFT]:
-                        x -= vel
-                    if keys[pygame.K_RIGHT]:
-                        x += vel
-                    if keys[pygame.K_UP]:
-                        y -= vel
-                    if keys[pygame.K_DOWN]:
-                        y += vel   
-                    self.display.fill(self.BLACK) 
-                    pygame.draw.rect(self.display,(255,0,0),(x,y,width,height))
-                    pygame.display.update()
-                    #End code from tutorial
-            #self.display.fill(self.BLACK)
-            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-            self.window.blit(self.display, (0,0))
+                self.playing= False
+            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)#Display some text in the middle
+            self.display.fill(self.BLACK)#Black screen
+            keys=pygame.key.get_pressed()
+            if keys[pygame.K_LEFT]:
+                x -= vel
+            if keys[pygame.K_RIGHT]:
+                x += vel
+            if keys[pygame.K_UP]:
+                y -= vel
+            if keys[pygame.K_DOWN]:
+                y += vel   
+            pygame.draw.rect(self.display,(255,0,0),(x,y,width,height))#Add red rectangle
+            self.window.blit(self.display, (0,0))#Blitting is drawing
             pygame.display.update()
             self.reset_keys()
-
-
 
     def check_events(self):
         for event in pygame.event.get():
