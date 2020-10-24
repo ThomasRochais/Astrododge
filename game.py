@@ -1,11 +1,13 @@
 import pygame
+from pygame import key
 from menu import *
+from rocket import *
 from projectiles import *
 class Game():
     def __init__(self):
         pygame.init()
         self.running, self.playing = True, False
-        self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
+        self.LEFT_KEY, self.RIGHT_KEY, self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 800
         self.display = pygame.Surface((self.DISPLAY_W,self.DISPLAY_H))
         self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
@@ -15,31 +17,25 @@ class Game():
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
         self.curr_menu = self.main_menu
-    #Thomas: modify to actually play a game
+        self.rocket=Rocket(self)
+
     def game_loop(self):
-        #Make classes
-        #Some initial values
-        x=50
-        y=50    
-        width=40
-        height=60
-        vel=5
         while self.playing:
+            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
+            self.display.fill(self.BLACK)#Black screen
             self.check_events()
             if self.START_KEY:
                 self.playing= False
-            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)#Display some text in the middle
-            self.display.fill(self.BLACK)#Black screen
-            keys=pygame.key.get_pressed()
-            if keys[pygame.K_LEFT]:
-                x -= vel
-            if keys[pygame.K_RIGHT]:
-                x += vel
-            if keys[pygame.K_UP]:
-                y -= vel
-            if keys[pygame.K_DOWN]:
-                y += vel   
-            pygame.draw.rect(self.display,(255,0,0),(x,y,width,height))#Add red rectangle
+            if self.LEFT_KEY:
+                self.rocket.move_left()
+            if self.RIGHT_KEY:
+                self.rocket.move_right()
+            if self.UP_KEY:
+                self.rocket.move_up()
+            if self.DOWN_KEY:
+                self.rocket.move_down()   
+            #Add red rectangle
+            self.rocket.blit_rocket()
             #Above should go into classes and functions
             ########################
             self.window.blit(self.display, (0,0))#Blitting is drawing
@@ -47,6 +43,7 @@ class Game():
             self.reset_keys()
 
     def check_events(self):
+        keys = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running, self.playing = False, False
@@ -64,7 +61,7 @@ class Game():
                     self.LEFT_KEY = True
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = True
-
+                    
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY,self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False, False, False
 
