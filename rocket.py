@@ -1,20 +1,22 @@
 import pygame
 import os 
-from menu import *
-#First let's make a moving rectangle here and then modify to make a moving rocket
 class Rocket():
     def __init__(self, game):
         self.game = game #Use a game object
-        self.width, self.height = self.game.DISPLAY_W / 20, self.game.DISPLAY_H / 20#Size of the rectangle
+        #self.width = self.game.DISPLAY_W / 20
+        #self.height = self.game.DISPLAY_H / 20
         #Initial position of the rectangle (bottom, centered)
+        self.spaceship = pygame.image.load(os.path.join("assets/sprites", "spaceship-a.svg"))
+        self.width, self.height= self.spaceship.get_size()
+        #Rescale spaceship
+        self.width, self.height = round(self.width*.4), round(self.height*.4)
+        self.spaceship = pygame.transform.scale(self.spaceship, (self.width,self.height))
+        #Initial position and velocity
         self.x, self.y = self.game.DISPLAY_W / 2 - self.width/2, self.game.DISPLAY_H - self.height
         self.vel=1 #Moving velocity
-        self.spaceship = pygame.transform.scale(pygame.image.load(os.path.join("assets/sprites", "spaceship-a.svg")), (round(self.width),round(self.height)))
-
 
     def blit_rocket(self):
         self.game.display.blit(self.spaceship, (self.x,self.y))
-        #pygame.draw.rect(self.game.display,(255,0,0),(self.x,self.y,self.width,self.height))
 
     def move_left(self):
         if self.x - self.vel > 0:
