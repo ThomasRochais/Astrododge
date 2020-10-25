@@ -1,6 +1,5 @@
 {
     "python.pythonPath": "/usr/bin/python3",
-    "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.flake8Args": ["--ignore=E24,W504", "--verbose", "--ignore=E501"],
     "python.formatting.provider": "yapf",
