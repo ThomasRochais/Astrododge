@@ -1,5 +1,5 @@
 import pygame
-import os 
+import os
 
 
 class Rocket():
