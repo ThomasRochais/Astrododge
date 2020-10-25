@@ -12,7 +12,7 @@ class Game():
         self.START_KEY, self.BACK_KEY = False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 800
         self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
-        self.window = pygame.display.set_mode(((self.DISPLAY_W, self.DISPLAY_H))
+        self.window = pygame.display.set_mode((self.DISPLAY_W, self.DISPLAY_H))
         self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.main_menu = MainMenu(self)
@@ -70,7 +70,7 @@ class Game():
         text_rect = text_surface.get_rect()
         text_rect.center = (x, y)
         self.display.blit(text_surface, text_rect)
-                                              
+
     def redrawGameWindow(self):
         self.rocket.blit_rocket()  # Draw the rocket
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
