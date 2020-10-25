@@ -4,4 +4,5 @@
     "python.linting.flake8Args": ["--ignore=E24,W504", "--verbose", "--ignore=E501"],
     "python.formatting.provider": "yapf",
     "python.formatting.yapfPath": "/usr/bin/python3"
+    //"python.formatting.yapfArgs": ["--style={column_limit: 120 }"]
 }
