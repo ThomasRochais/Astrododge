@@ -24,9 +24,8 @@ class Game():
 
     def game_loop(self):
         while self.playing:
-            pygame.key.set_repeat(
-                10,
-                5)  # So rocket can keep moving when pressing and holding keys
+            # So rocket can keep moving when pressing and holding keys
+            pygame.key.set_repeat(10, 5)  
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
             if self.START_KEY:
