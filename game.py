@@ -29,14 +29,7 @@ class Game():
             self.check_events()
             if self.START_KEY:
                 self.playing = False
-            if self.LEFT_KEY:
-                self.rocket.move_left()
-            if self.RIGHT_KEY:
-                self.rocket.move_right()
-            if self.UP_KEY:
-                self.rocket.move_up()
-            if self.DOWN_KEY:
-                self.rocket.move_down()
+            self.move_rocket()
             self.redrawGameWindow()
             self.reset_keys()
 
@@ -58,6 +51,16 @@ class Game():
                     self.LEFT_KEY = True
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = True
+
+    def move_rocket(self):
+            if self.LEFT_KEY:
+                self.rocket.move_left()
+            if self.RIGHT_KEY:
+                self.rocket.move_right()
+            if self.UP_KEY:
+                self.rocket.move_up()
+            if self.DOWN_KEY:
+                self.rocket.move_down()
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
