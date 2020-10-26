@@ -27,6 +27,7 @@ class Game():
             self.check_events()
             if self.START_KEY:
                 self.playing = False
+                # Reset the keys so the menu doesn't jump around
                 self.reset_keys()
             self.move_rocket()
             self.redrawGameWindow()
