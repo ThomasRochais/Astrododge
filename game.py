@@ -23,15 +23,13 @@ class Game():
 
     def game_loop(self):
         while self.playing:
-            # So rocket can keep moving when pressing and holding keys
-            pygame.key.set_repeat(10, 5)
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
             if self.START_KEY:
                 self.playing = False
+                self.reset_keys()
             self.move_rocket()
             self.redrawGameWindow()
-            self.reset_keys()
 
     def check_events(self):
         for event in pygame.event.get():
@@ -51,16 +49,30 @@ class Game():
                     self.LEFT_KEY = True
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = True
+            # Needed for continuous and diagonal movements
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RETURN:
+                    self.START_KEY = False
+                if event.key == pygame.K_BACKSPACE:
+                    self.BACK_KEY = False
+                if event.key == pygame.K_DOWN:
+                    self.DOWN_KEY = False
+                if event.key == pygame.K_UP:
+                    self.UP_KEY = False
+                if event.key == pygame.K_LEFT:
+                    self.LEFT_KEY = False
+                if event.key == pygame.K_RIGHT:
+                    self.RIGHT_KEY = False
 
     def move_rocket(self):
-            if self.LEFT_KEY:
-                self.rocket.move_left()
-            if self.RIGHT_KEY:
-                self.rocket.move_right()
-            if self.UP_KEY:
-                self.rocket.move_up()
-            if self.DOWN_KEY:
-                self.rocket.move_down()
+        if self.LEFT_KEY:
+            self.rocket.move_left()
+        if self.RIGHT_KEY:
+            self.rocket.move_right()
+        if self.UP_KEY:
+            self.rocket.move_up()
+        if self.DOWN_KEY:
+            self.rocket.move_down()
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
