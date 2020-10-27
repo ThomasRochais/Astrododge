@@ -29,7 +29,7 @@ class Game():
                 self.playing = False
                 # Reset the keys so the menu doesn't jump around
                 self.reset_keys()
-            self.move_rocket()
+            self.rocket.move_rocket()
             self.redrawGameWindow()
 
     def check_events(self):
@@ -40,6 +40,8 @@ class Game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
+                    # Reset the position of the rocket
+                    self.rocket.x, self.rocket.y = self.rocket.position('LEFT')
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
@@ -64,16 +66,6 @@ class Game():
                     self.LEFT_KEY = False
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = False
-
-    def move_rocket(self):
-        if self.LEFT_KEY:
-            self.rocket.move_left()
-        if self.RIGHT_KEY:
-            self.rocket.move_right()
-        if self.UP_KEY:
-            self.rocket.move_up()
-        if self.DOWN_KEY:
-            self.rocket.move_down()
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
