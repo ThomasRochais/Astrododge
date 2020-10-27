@@ -13,7 +13,7 @@ class Rocket():
         self.x, self.y = 0, self.game.DISPLAY_H / 2 - self.height / 2
         self.vel = 1
 
-    def position(self, pos):
+    def starting_position(self, pos):
         if pos == 'CENTER':
             return self.game.DISPLAY_W / 2 - self.width / 2, self.game.DISPLAY_H / 2 - self.height / 2
         if pos == 'TOP':

@@ -41,7 +41,7 @@ class Game():
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
                     # Reset the position of the rocket
-                    self.rocket.x, self.rocket.y = self.rocket.position('LEFT')
+                    self.rocket.x, self.rocket.y = self.rocket.starting_position('LEFT')
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
