@@ -35,14 +35,10 @@ class Game():
                 self.reset_keys()
             if i == 0:  # Generate a new bullet every freq per frame
                 self.bullets.append(Projectile(self.rocket))
-            for bullet in self.bullets:  # Move the bullets
-                bullet.move_projectile()
             i = (i + 1) % self.projectile.freq
+            self.bullets_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
-            for bullet in self.bullets:  # Delete bullets
-                if bullet.remove:
-                    self.bullets.pop(self.bullets.index(bullet))
 
     def check_events(self):
         for event in pygame.event.get():
@@ -78,6 +74,12 @@ class Game():
                     self.LEFT_KEY = False
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = False
+
+    def bullets_update(self):
+        for bullet in self.bullets:  # Move the bullets
+            bullet.move_projectile()
+            if bullet.remove:  # Delete bullets
+                self.bullets.pop(self.bullets.index(bullet))
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
