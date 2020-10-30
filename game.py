@@ -37,7 +37,7 @@ class Game():
                 self.bullets.append(Projectile(self.rocket))
             for bullet in self.bullets:  # Move the bullets
                 bullet.move_projectile()
-            i = (i+1) % self.projectile.freq
+            i = (i + 1) % self.projectile.freq
             self.rocket.move_rocket()
             self.redrawGameWindow()
             for bullet in self.bullets:  # Delete bullets

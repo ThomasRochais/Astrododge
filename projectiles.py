@@ -11,9 +11,9 @@ class Projectile():
         self.width, self.height = round(self.width * .05), round(self.height * .05)
         self.bullet = pygame.transform.scale(self.bullet, (self.width, self.height))
         self.x = self.rocket.x + self.rocket.width
-        self.y =  self.rocket.y + self.rocket.height / 2 - self.height / 2
+        self.y = self.rocket.y + self.rocket.height / 2 - self.height / 2
         self.vel = self.rocket.vel * 2  # Adjust velocity
-        self.freq = self.width // self.vel * 5 # Adjust frequency of frames per bullet
+        self.freq = self.width // self.vel * 5  # Adjust frequency of frames per bullet
         self.remove = False
 
     def projectiles_loop(self):
@@ -27,4 +27,3 @@ class Projectile():
             self.x += self.vel
         else:
             self.remove = True
-
