@@ -1,8 +1,9 @@
 import pygame
+import time
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
 from projectile import Projectile
-
+from asteroid import Asteroid
 
 class Game():
     def __init__(self):
@@ -23,12 +24,14 @@ class Game():
         self.rocket = Rocket(self)
         self.projectile = Projectile(self.rocket)
         self.projectiles = []
+        self.asteroids = []
 
     def game_loop(self):
         i = 0  # Projectiles loop
         while self.playing:
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
+            self.generateAsteroid()
             if self.START_KEY:
                 self.playing = False
                 # Reset the keys so the menu doesn't jump around
@@ -99,3 +102,9 @@ class Game():
             p.blit_projectile()
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
+
+    def generateAsteroid(self):
+        asteroid = Asteroid(self, len(self.asteroids) + 1)
+        asteroid.blit_asteroid()
+        self.asteroids.append(asteroid)
+    
