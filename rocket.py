@@ -11,7 +11,7 @@ class Rocket():
         self.width, self.height = round(self.width * .4), round(self.height * .4)
         self.spaceship = pygame.transform.scale(self.spaceship, (self.width, self.height))
         self.x, self.y = 0, self.game.DISPLAY_H / 2 - self.height / 2
-        self.vel = 1
+        self.vel = .5
 
     def starting_position(self, pos):
         if pos == 'CENTER':

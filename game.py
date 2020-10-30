@@ -1,3 +1,4 @@
+from projectiles import Projectile
 import pygame
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
@@ -20,8 +21,11 @@ class Game():
         self.credits = CreditsMenu(self)
         self.curr_menu = self.main_menu
         self.rocket = Rocket(self)
+        self.projectile = Projectile(self.rocket)
+        self.bullets = []
 
     def game_loop(self):
+        i = 0  # Projectiles loop
         while self.playing:
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
@@ -29,8 +33,16 @@ class Game():
                 self.playing = False
                 # Reset the keys so the menu doesn't jump around
                 self.reset_keys()
+            if i == 0:  # Generate a new bullet every freq per frame
+                self.bullets.append(Projectile(self.rocket))
+            for bullet in self.bullets:  # Move the bullets
+                bullet.move_projectile()
+            i = (i+1) % self.projectile.freq
             self.rocket.move_rocket()
             self.redrawGameWindow()
+            for bullet in self.bullets:  # Delete bullets
+                if bullet.remove:
+                    self.bullets.pop(self.bullets.index(bullet))
 
     def check_events(self):
         for event in pygame.event.get():
@@ -40,8 +52,8 @@ class Game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
-                    # Reset the position of the rocket
                     self.rocket.x, self.rocket.y = self.rocket.starting_position('LEFT')
+                    self.bullets = []
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
@@ -81,5 +93,7 @@ class Game():
 
     def redrawGameWindow(self):
         self.rocket.blit_rocket()  # Draw the rocket
+        for bullet in self.bullets:  # Draw all the bullets
+            bullet.blit_projectile()
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
