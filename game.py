@@ -1,7 +1,7 @@
 import pygame
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
-from projectiles import Projectile
+from projectile import Projectile
 
 
 class Game():
@@ -21,7 +21,7 @@ class Game():
         self.credits = CreditsMenu(self)
         self.curr_menu = self.main_menu
         self.rocket = Rocket(self)
-        self.bullet = Projectile(self.rocket)
+        self.projectile = Projectile(self.rocket)
         self.projectiles = []
 
     def game_loop(self):
@@ -35,7 +35,7 @@ class Game():
                 self.reset_keys()
             if i == 0:  # Generate a new projectile every freq per frame
                 self.projectiles.append(Projectile(self.rocket))
-            i = (i + 1) % self.bullet.freq
+            i = (i + 1) % self.projectile.freq
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
