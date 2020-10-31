@@ -1,7 +1,7 @@
-from projectiles import Projectile
 import pygame
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
+from projectiles import Projectile
 
 
 class Game():
@@ -21,8 +21,8 @@ class Game():
         self.credits = CreditsMenu(self)
         self.curr_menu = self.main_menu
         self.rocket = Rocket(self)
-        self.projectile = Projectile(self.rocket)
-        self.bullets = []
+        self.bullet = Projectile(self.rocket)
+        self.projectiles = []
 
     def game_loop(self):
         i = 0  # Projectiles loop
@@ -33,10 +33,10 @@ class Game():
                 self.playing = False
                 # Reset the keys so the menu doesn't jump around
                 self.reset_keys()
-            if i == 0:  # Generate a new bullet every freq per frame
-                self.bullets.append(Projectile(self.rocket))
-            i = (i + 1) % self.projectile.freq
-            self.bullets_update()
+            if i == 0:  # Generate a new projectile every freq per frame
+                self.projectiles.append(Projectile(self.rocket))
+            i = (i + 1) % self.bullet.freq
+            self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
 
@@ -49,7 +49,7 @@ class Game():
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
                     self.rocket.x, self.rocket.y = self.rocket.starting_position('LEFT')
-                    self.bullets = []
+                    self.projectiles = []
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
@@ -75,11 +75,11 @@ class Game():
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = False
 
-    def bullets_update(self):
-        for bullet in self.bullets:  # Move the bullets
-            bullet.move_projectile()
-            if bullet.remove:  # Delete bullets
-                self.bullets.pop(self.bullets.index(bullet))
+    def projectiles_update(self):
+        for p in self.projectiles:  # Move the projectiles
+            p.move_projectile()
+            if p.remove:  # Delete projectiles
+                self.projectiles.pop(self.projectiles.index(p))
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
@@ -95,7 +95,7 @@ class Game():
 
     def redrawGameWindow(self):
         self.rocket.blit_rocket()  # Draw the rocket
-        for bullet in self.bullets:  # Draw all the bullets
-            bullet.blit_projectile()
+        for p in self.projectiles:  # Draw all the projectiles
+            p.blit_projectile()
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
