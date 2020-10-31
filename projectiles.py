@@ -16,9 +16,6 @@ class Projectile():
         self.freq = self.width // self.vel * 5  # Adjust frequency of frames per bullet
         self.remove = False
 
-    def projectiles_loop(self):
-        pass
-
     def blit_projectile(self):  # Displaying projectile
         self.game.display.blit(self.bullet, (self.x, self.y))
 
