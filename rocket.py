@@ -5,11 +5,11 @@ import os
 class Rocket():
     def __init__(self, game):
         self.game = game
-        self.spaceship = pygame.image.load(os.path.join("assets/sprites", "spaceship-a.svg"))
-        self.spaceship = pygame.transform.rotate(self.spaceship, -90)
-        self.width, self.height = self.spaceship.get_size()
+        self.image = pygame.image.load(os.path.join("assets/sprites", "spaceship-a.svg"))
+        self.image = pygame.transform.rotate(self.image, -90)
+        self.width, self.height = self.image.get_size()
         self.width, self.height = round(self.width * .4), round(self.height * .4)
-        self.spaceship = pygame.transform.scale(self.spaceship, (self.width, self.height))
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.x, self.y = 0, self.game.DISPLAY_H / 2 - self.height / 2
         self.vel = 1
 
@@ -25,8 +25,8 @@ class Rocket():
         if pos == 'RIGHT':
             return self.game.DISPLAY_W - self.width, self.game.DISPLAY_H / 2 - self.height / 2
 
-    def blit_rocket(self):  # Displaying spaceship
-        self.game.display.blit(self.spaceship, (self.x, self.y))
+    def blit_rocket(self):  # Displaying rocket image
+        self.game.display.blit(self.image, (self.x, self.y))
 
     def move_rocket(self):  # Moving the rocket and checking the boundaries
         if self.game.LEFT_KEY:
