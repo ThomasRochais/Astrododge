@@ -5,6 +5,7 @@ from rocket import Rocket
 from projectile import Projectile
 from asteroid import Asteroid
 
+
 class Game():
     def __init__(self):
         pygame.init()
@@ -39,6 +40,7 @@ class Game():
             if i == 0:  # Generate a new projectile every freq per frame
                 self.projectiles.append(Projectile(self.rocket))
             i = (i + 1) % self.projectile.freq
+            self.generateAsteroid()
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
@@ -107,4 +109,3 @@ class Game():
         asteroid = Asteroid(self, len(self.asteroids) + 1)
         asteroid.blit_asteroid()
         self.asteroids.append(asteroid)
-    
