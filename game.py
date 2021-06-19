@@ -91,9 +91,9 @@ class Game():
                 self.projectiles.pop(self.projectiles.index(p))
 
     def asteroids_update(self):
-        for a in self.asteroids: # Move the asteroids
+        for a in self.asteroids:  # Move the asteroids
             a.move_asteroid()
-            if a.remove: # Delete asteroid
+            if a.remove:  # Delete asteroid
                 self.asteroids.pop(self.asteroids.index(a))
 
     def reset_keys(self):
@@ -112,7 +112,7 @@ class Game():
         self.rocket.blit_rocket()  # Draw the rocket
         for p in self.projectiles:  # Draw all the projectiles
             p.blit_projectile()
-        for a in self.asteroids: # Draw all the asteroids
+        for a in self.asteroids:  # Draw all the asteroids
             a.blit_asteroid()
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
