@@ -1,5 +1,5 @@
+from asteroid import Asteroid
 import pygame
-import time
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
 from projectile import Projectile
@@ -25,14 +25,15 @@ class Game():
         self.rocket = Rocket(self)
         self.projectile = Projectile(self.rocket)
         self.projectiles = []
+        self.asteroid = Asteroid(self)
         self.asteroids = []
 
     def game_loop(self):
         i = 0  # Projectiles loop
+        j = 0  # Asteroids loop
         while self.playing:
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
-            self.generateAsteroid()
             if self.START_KEY:
                 self.playing = False
                 # Reset the keys so the menu doesn't jump around
@@ -40,7 +41,10 @@ class Game():
             if i == 0:  # Generate a new projectile every freq per frame
                 self.projectiles.append(Projectile(self.rocket))
             i = (i + 1) % self.projectile.freq
-            self.generateAsteroid()
+            if j == 0:  # Generate a new asteroid every freq per frame
+                self.asteroids.append(Asteroid(self))
+            j = (j + 1) % self.asteroid.freq
+            self.asteroids_update()
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
@@ -86,6 +90,12 @@ class Game():
             if p.remove:  # Delete projectiles
                 self.projectiles.pop(self.projectiles.index(p))
 
+    def asteroids_update(self):
+        for a in self.asteroids: # Move the asteroids
+            a.move_asteroid()
+            if a.remove: # Delete asteroid
+                self.asteroids.pop(self.asteroids.index(a))
+
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
         self.UP_KEY, self.DOWN_KEY = False, False
@@ -102,10 +112,7 @@ class Game():
         self.rocket.blit_rocket()  # Draw the rocket
         for p in self.projectiles:  # Draw all the projectiles
             p.blit_projectile()
+        for a in self.asteroids: # Draw all the asteroids
+            a.blit_asteroid()
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
-
-    def generateAsteroid(self):
-        asteroid = Asteroid(self, len(self.asteroids) + 1)
-        asteroid.blit_asteroid()
-        self.asteroids.append(asteroid)
