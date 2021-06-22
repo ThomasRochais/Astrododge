@@ -83,17 +83,48 @@ class Game():
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = False
 
+    def asteroids_update(self):
+        for a in self.asteroids:  # Move the asteroids
+            a.move_asteroid()
+            if a.remove:  # Delete asteroid
+                self.asteroids.pop(self.asteroids.index(a))
+            else:
+                if self.collision_rocket(a, self.rocket):
+                    self.asteroids.pop(self.asteroids.index(a))
+                    self.rocket.life -= 1
+                    print("Rocket lives: ", self.rocket.life)
+                else:
+                    for p in self.projectiles:
+                        if self.collision_projectile(a, p):
+                            self.asteroids.pop(self.asteroids.index(a))
+                            self.projectiles.pop(self.projectiles.index(p))
+                            break
+
     def projectiles_update(self):
         for p in self.projectiles:  # Move the projectiles
             p.move_projectile()
             if p.remove:  # Delete projectiles
                 self.projectiles.pop(self.projectiles.index(p))
 
-    def asteroids_update(self):
-        for a in self.asteroids:  # Move the asteroids
-            a.move_asteroid()
-            if a.remove:  # Delete asteroid
-                self.asteroids.pop(self.asteroids.index(a))
+    def collision_projectile(self, asteroid, projectile):
+        if asteroid.y + asteroid.height > projectile.y \
+         and asteroid.y < projectile.y + projectile.height \
+         and asteroid.x < projectile.x + projectile.width \
+         and asteroid.x + asteroid.width > projectile.x:
+            return True
+        else:
+            return False
+
+    def collision_rocket(self, asteroid, rocket):
+        if asteroid.y + asteroid.height > rocket.y and asteroid.y < rocket.y + rocket.height \
+         and asteroid.x < rocket.x + rocket.width / 2 and asteroid.x + asteroid.width > rocket.x:
+            return True
+        elif asteroid.y + asteroid.height > rocket.y + rocket.height / rocket.width * (asteroid.x + asteroid.width / 2) \
+         and asteroid.y < rocket.y - rocket.height / rocket.width * (asteroid.x + asteroid.width / 2) \
+         and asteroid.x < rocket.x + rocket.width and asteroid.x + asteroid.width > rocket.x + rocket.width / 2:
+            return True
+        else:
+            return False
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False

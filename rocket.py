@@ -12,6 +12,7 @@ class Rocket():
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.x, self.y = 0, self.game.DISPLAY_H / 2 - self.height / 2
         self.vel = 1
+        self.life = 10  # Initial amount of lives
 
     def starting_position(self, pos):
         if pos == 'CENTER':

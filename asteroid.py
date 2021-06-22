@@ -25,7 +25,7 @@ class Asteroid():
 
     def move_asteroid(self):  # Moving the projectile and checking the boundaries
         vel_y = math.sqrt(2 * self.gravity * (self.y + self.height))
-        if self.x - self.vel > 0 and self.y + vel_y < self.game.DISPLAY_H:
+        if self.x + self.width - self.vel > 0 and self.y + vel_y < self.game.DISPLAY_H:
             self.x -= self.vel
             self.y += vel_y
         else:
