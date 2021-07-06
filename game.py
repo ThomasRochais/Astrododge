@@ -43,7 +43,7 @@ class Game():
             if j == 0:  # Generate a new asteroid every freq per frame
                 self.asteroids.append(Asteroid(self))
             j = (j + 1) % self.asteroid.freq
-            self.asteroids_update()
+            self.asteroid.asteroids_update()
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
@@ -83,23 +83,6 @@ class Game():
                 if event.key == pygame.K_RIGHT:
                     self.RIGHT_KEY = False
 
-    def asteroids_update(self):
-        for a in self.asteroids:  # Move the asteroids
-            a.move_asteroid()
-            if a.remove:  # Delete asteroid
-                self.asteroids.pop(self.asteroids.index(a))
-            else:
-                if self.collision_rocket(a, self.rocket):
-                    self.asteroids.pop(self.asteroids.index(a))
-                    self.rocket.life -= 1
-                    print("Rocket lives: ", self.rocket.life)
-                else:
-                    for p in self.projectiles:
-                        if self.collision_projectile(a, p):
-                            self.asteroids.pop(self.asteroids.index(a))
-                            self.projectiles.pop(self.projectiles.index(p))
-                            break
-
     def projectiles_update(self):
         for p in self.projectiles:  # Move the projectiles
             p.move_projectile()
@@ -111,18 +94,6 @@ class Game():
                 and asteroid.y < projectile.y + projectile.height \
                 and asteroid.x < projectile.x + projectile.width \
                 and asteroid.x + asteroid.width > projectile.x:
-            return True
-        else:
-            return False
-
-    def collision_rocket(self, asteroid, rocket):
-        if asteroid.y + asteroid.height > rocket.y and asteroid.y < rocket.y + rocket.height \
-                and asteroid.x < rocket.x + rocket.width / 2 and asteroid.x + asteroid.width > rocket.x:
-            return True
-        elif asteroid.y + asteroid.height > rocket.y + rocket.height / rocket.width * (asteroid.x + asteroid.width / 2) \
-                and asteroid.y < rocket.y - rocket.height / rocket.width * (asteroid.x + asteroid.width / 2) \
-                and asteroid.x < rocket.x + rocket.width \
-                and asteroid.x + asteroid.width > rocket.x + rocket.width / 2:
             return True
         else:
             return False
