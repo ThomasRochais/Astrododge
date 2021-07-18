@@ -12,6 +12,7 @@ class Rocket():
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.x, self.y = 0, self.game.DISPLAY_H / 2 - self.height / 2
         self.vel = 1
+        self.life = 10  # Initial amount of lives
 
     def starting_position(self, pos):
         if pos == 'CENTER':
@@ -41,3 +42,15 @@ class Rocket():
         if self.game.DOWN_KEY:
             if self.y + self.vel < self.game.DISPLAY_H - self.height:
                 self.y += self.vel
+
+    def collision_rocket(self, asteroid):
+        if asteroid.y + asteroid.height > self.y and asteroid.y < self.y + self.height \
+                and asteroid.x < self.x + self.width / 2 and asteroid.x + asteroid.width > self.x:
+            return True
+        elif asteroid.y + asteroid.height > self.y + self.height / self.width * (asteroid.x + asteroid.width / 2) \
+                and asteroid.y < self.y - self.height / self.width * (asteroid.x + asteroid.width / 2) \
+                and asteroid.x < self.x + self.width \
+                and asteroid.x + asteroid.width > self.x + self.width / 2:
+            return True
+        else:
+            return False
