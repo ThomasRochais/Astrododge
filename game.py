@@ -48,9 +48,28 @@ class Game():
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
-            if self.rocket.life <= 0:  # Game over: back to the menu
+            if self.rocket.life <= 0:  # Game over: show screen, then back to the menu
                 self.playing = False
                 self.reset_keys()
+                self.game_over_screen()
+
+    def game_over_screen(self):
+        self.display.fill(self.BLACK)
+        self.draw_text('GAME OVER', 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 50)
+        self.draw_text('Score: ' + str(self.score), 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 10)
+        self.draw_text('Press Enter to continue', 20, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 60)
+        self.window.blit(self.display, (0, 0))
+        pygame.display.update()
+        waiting = True
+        while waiting:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    self.curr_menu.run_display = False
+                    waiting = False
+                if event.type == pygame.KEYDOWN and event.key in (pygame.K_RETURN, pygame.K_BACKSPACE):
+                    waiting = False
+        self.reset_keys()  # Don't carry the keypress into the menu
 
     def check_events(self):
         for event in pygame.event.get():
@@ -62,6 +81,7 @@ class Game():
                     self.START_KEY = True
                     self.rocket.x, self.rocket.y = self.rocket.starting_position('LEFT')
                     self.rocket.life = 10  # Reset lives for a fresh game
+                    self.score = 0  # Reset score for a fresh game
                     self.projectiles = []
                     self.asteroids = []
                 if event.key == pygame.K_BACKSPACE:
@@ -116,11 +136,16 @@ class Game():
         text_rect.center = (x, y)
         self.display.blit(text_surface, text_rect)
 
+    def draw_hud(self):  # Score on the left, lives on the right
+        self.draw_text('Score: ' + str(self.score), 20, 70, 20)
+        self.draw_text('Lives: ' + str(self.rocket.life), 20, self.DISPLAY_W - 70, 20)
+
     def redrawGameWindow(self):
         self.rocket.blit_rocket()  # Draw the rocket
         for p in self.projectiles:  # Draw all the projectiles
             p.blit_projectile()
         for a in self.asteroids:  # Draw all the asteroids
             a.blit_asteroid()
+        self.draw_hud()  # Draw the score and lives on top
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()

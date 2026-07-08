@@ -46,4 +46,5 @@ class Asteroid():
                         if self.game.collision_projectile(a, p):
                             self.game.asteroids.remove(a)
                             self.game.projectiles.remove(p)
+                            self.game.score += 1  # Reward for destroying an asteroid
                             break
