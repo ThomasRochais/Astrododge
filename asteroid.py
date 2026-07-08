@@ -32,18 +32,18 @@ class Asteroid():
             self.remove = True
 
     def asteroids_update(self):
-        for a in self.game.asteroids:  # Move the asteroids
+        for a in self.game.asteroids[:]:  # Iterate a copy so removals don't skip items
             a.move_asteroid()
             if a.remove:  # Delete asteroid
-                self.game.asteroids.pop(self.game.asteroids.index(a))
+                self.game.asteroids.remove(a)
             else:
                 if self.game.rocket.collision_rocket(a):
-                    self.game.asteroids.pop(self.game.asteroids.index(a))
+                    self.game.asteroids.remove(a)
                     self.game.rocket.life -= 1
                     print("Rocket lives: ", self.game.rocket.life)
                 else:
-                    for p in self.game.projectiles:
+                    for p in self.game.projectiles[:]:
                         if self.game.collision_projectile(a, p):
-                            self.game.asteroids.pop(self.game.asteroids.index(a))
-                            self.game.projectiles.pop(self.game.projectiles.index(p))
+                            self.game.asteroids.remove(a)
+                            self.game.projectiles.remove(p)
                             break

@@ -26,6 +26,7 @@ class Game():
         self.projectiles = []
         self.asteroid = Asteroid(self)
         self.asteroids = []
+        self.score = 0  # Points earned by shooting asteroids
 
     def game_loop(self):
         i = 0  # Projectiles loop
@@ -47,6 +48,9 @@ class Game():
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
+            if self.rocket.life <= 0:  # Game over: back to the menu
+                self.playing = False
+                self.reset_keys()
 
     def check_events(self):
         for event in pygame.event.get():
@@ -57,7 +61,9 @@ class Game():
                 if event.key == pygame.K_RETURN:
                     self.START_KEY = True
                     self.rocket.x, self.rocket.y = self.rocket.starting_position('LEFT')
+                    self.rocket.life = 10  # Reset lives for a fresh game
                     self.projectiles = []
+                    self.asteroids = []
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
@@ -84,10 +90,10 @@ class Game():
                     self.RIGHT_KEY = False
 
     def projectiles_update(self):
-        for p in self.projectiles:  # Move the projectiles
+        for p in self.projectiles[:]:  # Iterate a copy so removals don't skip items
             p.move_projectile()
             if p.remove:  # Delete projectiles
-                self.projectiles.pop(self.projectiles.index(p))
+                self.projectiles.remove(p)
 
     def collision_projectile(self, asteroid, projectile):
         if asteroid.y + asteroid.height > projectile.y \
