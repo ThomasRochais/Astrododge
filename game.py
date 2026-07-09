@@ -1,3 +1,4 @@
+import os
 import pygame
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
@@ -27,6 +28,8 @@ class Game():
         self.asteroid = Asteroid(self)
         self.asteroids = []
         self.score = 0  # Points earned by shooting asteroids
+        self.high_score_file = 'highscore.txt'  # Best score persisted between sessions
+        self.high_score = self.load_high_score()
 
     def game_loop(self):
         i = 0  # Projectiles loop
@@ -53,11 +56,33 @@ class Game():
                 self.reset_keys()
                 self.game_over_screen()
 
+    def load_high_score(self):  # Read the best score from disk, defaulting to 0
+        try:
+            with open(self.high_score_file) as f:
+                return int(f.read().strip())
+        except (IOError, ValueError):  # Missing or corrupt file
+            return 0
+
+    def save_high_score(self):  # Persist the best score to disk
+        try:
+            with open(self.high_score_file, 'w') as f:
+                f.write(str(self.high_score))
+        except IOError:
+            pass  # Not fatal: just skip persisting this run
+
     def game_over_screen(self):
+        new_high_score = self.score > self.high_score
+        if new_high_score:  # Beat the record: update and persist it
+            self.high_score = self.score
+            self.save_high_score()
         self.display.fill(self.BLACK)
         self.draw_text('GAME OVER', 50, self.DISPLAY_W / 2, self.DISPLAY_H / 2 - 50)
         self.draw_text('Score: ' + str(self.score), 30, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 10)
-        self.draw_text('Press Enter to continue', 20, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 60)
+        if new_high_score:
+            self.draw_text('NEW HIGH SCORE!', 25, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 45)
+        else:
+            self.draw_text('High Score: ' + str(self.high_score), 25, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 45)
+        self.draw_text('Press Enter to continue', 20, self.DISPLAY_W / 2, self.DISPLAY_H / 2 + 85)
         self.window.blit(self.display, (0, 0))
         pygame.display.update()
         waiting = True
@@ -136,8 +161,9 @@ class Game():
         text_rect.center = (x, y)
         self.display.blit(text_surface, text_rect)
 
-    def draw_hud(self):  # Score on the left, lives on the right
+    def draw_hud(self):  # Score on the left, high score centered, lives on the right
         self.draw_text('Score: ' + str(self.score), 20, 70, 20)
+        self.draw_text('Best: ' + str(self.high_score), 20, self.DISPLAY_W / 2, 20)
         self.draw_text('Lives: ' + str(self.rocket.life), 20, self.DISPLAY_W - 70, 20)
 
     def redrawGameWindow(self):
