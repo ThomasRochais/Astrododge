@@ -1,4 +1,3 @@
-import os
 import pygame
 from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
