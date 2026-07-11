@@ -1,6 +1,8 @@
 import pygame
 import os
 
+import graphics
+
 
 class Menu():
     def __init__(self, game):
@@ -10,7 +12,7 @@ class Menu():
         self.background = pygame.transform.scale(pygame.image.load(os.path.join("assets", "menu.bmp")),
                                                  (self.game.DISPLAY_W, self.game.DISPLAY_H))
         self.music = pygame.mixer.music.load(os.path.join("assets", "song", "mainMenu.wav"))
-        self.cursor = pygame.transform.scale(pygame.image.load(os.path.join("assets", "rocketCursor.png")), (40, 20))
+        self.cursor = graphics.load_sprite(os.path.join("assets", "rocketCursor.png"), size=(40, 20))
         self.cursor_rect = self.cursor.get_rect()
         self.cursor_song = pygame.mixer.Sound(os.path.join("assets", "song", "blip.wav"))
         self.offset = -125
