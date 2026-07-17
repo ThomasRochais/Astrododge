@@ -3,6 +3,7 @@ from menu import MainMenu, OptionsMenu, CreditsMenu
 from rocket import Rocket
 from projectile import Projectile
 from asteroid import Asteroid
+from character import Character
 
 
 class Game():
@@ -27,6 +28,8 @@ class Game():
         self.projectiles = []
         self.asteroid = Asteroid(self)
         self.asteroids = []
+        self.character = Character(self)
+        self.characters = []
         self.score = 0  # Points earned by shooting asteroids
         self.high_score_file = 'highscore.txt'  # Best score persisted between sessions
         self.high_score = self.load_high_score()
@@ -34,6 +37,7 @@ class Game():
     def game_loop(self):
         i = 0  # Projectiles loop
         j = 0  # Asteroids loop
+        k = 0  # Characters loop
         while self.playing:
             self.display.fill(self.BLACK)  # Black screen
             self.check_events()
@@ -47,7 +51,11 @@ class Game():
             if j == 0:  # Generate a new asteroid every freq per frame
                 self.asteroids.append(Asteroid(self))
             j = (j + 1) % self.asteroid.freq
+            if k == 0:  # Generate a new character every freq per frame
+                self.characters.append(Character(self))
+            k = (k + 1) % self.character.freq
             self.asteroid.asteroids_update()
+            self.character.characters_update()
             self.projectiles_update()
             self.rocket.move_rocket()
             self.redrawGameWindow()
@@ -109,6 +117,7 @@ class Game():
                     self.score = 0  # Reset score for a fresh game
                     self.projectiles = []
                     self.asteroids = []
+                    self.characters = []
                 if event.key == pygame.K_BACKSPACE:
                     self.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
@@ -163,6 +172,8 @@ class Game():
             p.blit_projectile()
         for a in self.asteroids:  # Draw all the asteroids
             a.blit_asteroid()
+        for c in self.characters:  # Draw all the rescuable characters
+            c.blit_character()
         self.draw_hud()  # Draw the score and lives on top
         self.window.blit(self.display, (0, 0))  # Blitting is drawing
         pygame.display.update()
