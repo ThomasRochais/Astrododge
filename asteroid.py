@@ -1,16 +1,14 @@
-import pygame
-import os
 import random
 import math
+
+import graphics
 
 
 class Asteroid():
     def __init__(self, game):
         self.game = game
-        self.image = pygame.image.load(os.path.join("assets/sprites", "asteroid1.png"))
-        self.width, self.height = self.image.get_size()
-        self.width, self.height = round(self.width * .1), round(self.height * .1)
-        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.image = graphics.load_sprite(
+            "assets/sprites/asteroid1.png", scale=0.1)
         self.width, self.height = self.image.get_size()
         self.x, self.y = random.choice([
             (self.game.DISPLAY_W, random.uniform(0, self.game.DISPLAY_H)),
@@ -19,16 +17,20 @@ class Asteroid():
         self.gravity = 0.0001  # Gravity coefficient for falling
         self.freq = 100  # Adjust frequency of frames per projectile
         self.remove = False
+        self.rect = self.image.get_rect(topleft=(round(self.x), round(self.y)))
+        self.mask = graphics.mask_from(self.image)
 
-    def blit_asteroid(self):  # Displaying projectile
-        self.game.display.blit(self.image, (self.x, self.y))
+    def blit_asteroid(self):  # Displaying asteroid
+        self.rect.topleft = (round(self.x), round(self.y))
+        self.game.display.blit(self.image, self.rect)
 
-    def move_asteroid(self):  # Moving the projectile and checking the boundaries
+    def move_asteroid(self):  # Moving the asteroid and checking the boundaries
         vel_y = math.sqrt(2 * self.gravity * (self.y + self.height))
-        if self.x + self.width - self.vel > 0 and self.y + vel_y < self.game.DISPLAY_H:
-            self.x -= self.vel
-            self.y += vel_y
-        else:
+        self.x -= self.vel
+        self.y += vel_y
+        self.rect.topleft = (round(self.x), round(self.y))
+        # Gone once it drifts off the left edge or sinks past the bottom.
+        if self.rect.right <= 0 or self.rect.bottom >= self.game.DISPLAY_H:
             self.remove = True
 
     def asteroids_update(self):
@@ -37,13 +39,13 @@ class Asteroid():
             if a.remove:  # Delete asteroid
                 self.game.asteroids.remove(a)
             else:
-                if self.game.rocket.collision_rocket(a):
+                if graphics.masks_collide(self.game.rocket, a):
                     self.game.asteroids.remove(a)
                     self.game.rocket.life -= 1
                     print("Rocket lives: ", self.game.rocket.life)
                 else:
                     for p in self.game.projectiles[:]:
-                        if self.game.collision_projectile(a, p):
+                        if graphics.masks_collide(a, p):
                             self.game.asteroids.remove(a)
                             self.game.projectiles.remove(p)
                             self.game.score += 1  # Reward for destroying an asteroid

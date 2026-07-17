@@ -14,6 +14,7 @@ class Game():
         self.START_KEY, self.BACK_KEY = False, False
         self.DISPLAY_W, self.DISPLAY_H = 800, 600
         self.display = pygame.Surface((self.DISPLAY_W, self.DISPLAY_H))
+        self.screen_rect = self.display.get_rect()  # Bounds the rocket clamps to
         self.window = pygame.display.set_mode((self.DISPLAY_W, self.DISPLAY_H))
         self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
@@ -138,15 +139,6 @@ class Game():
             p.move_projectile()
             if p.remove:  # Delete projectiles
                 self.projectiles.remove(p)
-
-    def collision_projectile(self, asteroid, projectile):
-        if asteroid.y + asteroid.height > projectile.y \
-                and asteroid.y < projectile.y + projectile.height \
-                and asteroid.x < projectile.x + projectile.width \
-                and asteroid.x + asteroid.width > projectile.x:
-            return True
-        else:
-            return False
 
     def reset_keys(self):
         self.LEFT_KEY, self.RIGHT_KEY = False, False
